@@ -1,21 +1,19 @@
 #!/bin/bash
 
-if [ "$#" -ne 2 || ! -n $writestr ]; then
+writefile="$1"
+writestr="$2"
+
+if [ $# -lt 2 ] || [ ! -n $writestr ]
+then
     echo "Error: Please provide the full path to a file and the text string to write."
     exit 1
 fi
 
-writefile="$1"
-writestr="$2"
-
 dir=$(dirname "$writefile")
 
-if [ ! -d $dir ]; then
-	mkdir -p "$dir"
-fi
-
-if [ ! -f $writefile ]; then
-    touch $writefile
+if [ $(touch "$writefile" 2> "/dev/null" || mkdir -p "$dir") ]; then
+    echo "Error"
+    exit 1
 fi
 
 echo "$writestr" > "$writefile"
