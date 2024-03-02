@@ -8,13 +8,14 @@ fi
 writefile="$1"
 writestr="$2"
 
-mkdir -p "$(dirname "$writefile")"
+dir=$(dirname "$writefile")
+
+if [ ! -d $dir ]; then
+	mkdir -p "$dir"
+fi
+
+if [ ! -f $writefile ]; then
+    touch $writefile
+fi
 
 echo "$writestr" > "$writefile"
-
-if [ $? -ne 0 ]; then
-    echo "Error: Could not create or write to the file '$writefile'."
-    exit 1
-else
-    echo "File '$writefile' created successfully with content: '$writestr'"
-fi
